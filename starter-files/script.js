@@ -1,24 +1,35 @@
 // API
 const API_ENDPOINT = 'https://yesno.wtf/api';
 const button = document.getElementById("button")
+const ball = document.getElementById("ball")
 
-function clearAnswer() {
-    document.getElementById("answer").innerText = ""
+function loadingState () {
+    ball.classList.add("shake__ball")
+}
+function cleanUp () {
+    setTimeout(() => {
+        document.getElementById("answer").innerHTML = ""
+    },3000)
 }
 
 function renderAnswer(data){
 const answer = data.answer
-document.getElementById("answer").innerText = answer
-setTimeout(clearAnswer,3000)
+setTimeout(() => {
+    document.getElementById("answer").innerHTML = `<p>${answer}</p>`
+    ball.classList.remove("shake__ball")
+    cleanUp()
+}, 1000)
+
+
 }
 
 function fetchAnswer (){
+    loadingState()
     fetch(API_ENDPOINT)
     .then (res => {
         return res.json()
     })
     .then (res => {
-        console.log(res)
         renderAnswer(res)
     })
     .catch(err => {
